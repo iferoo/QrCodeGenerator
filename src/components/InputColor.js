@@ -1,11 +1,18 @@
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { ChromePicker } from 'react-color';
+import { InputContext } from '../App';
 
 export default function InputColor() {
   const [color, setColor] = useState('#054080');
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
 
   const handleChange = color => setColor(color.hex);
+  //Context
+  const { inputValue, setInputValue } = useContext(InputContext);
+  useEffect(() => {
+    setInputValue({ ...inputValue, color: color });
+  }, [color]);
+  
   return (
     <div>
       <label className="font-semibold text-md">Color</label>
@@ -18,7 +25,7 @@ export default function InputColor() {
         <span>{color}</span>
       </div>
       {displayColorPicker && (
-        <div className='absolute mt-2'>
+        <div className="absolute mt-2">
           <ChromePicker color={color} onChange={handleChange} />
         </div>
       )}
